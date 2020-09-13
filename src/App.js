@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -8,36 +10,62 @@ class App extends Component {
     this.state = {
       email: '',
       password: '',
-      loggedInUser: {}
+      loggedInUser: {},
     };
   }
 
-  async login() {}
+  async signup() {
+    let { email, password } = this.state;
+    let res = await axios.post('/auth/signup', {
+      email,
+      password,
+    });
+    this.setState({
+      loggedInUser: res.data,
+      email: '',
+      passwrod: '',
+    });
+  }
+  async login() {
+    let { email, password } = this.state;
+    let res = await axios.post('/auth/login', {
+      email,
+      password,
+    });
+    this.setState({
+      loggedInUser: res.data,
+      email: '',
+      password: '',
+    });
+  }
 
-  async signup() {}
-
-  logout() {}
+  logout() {
+    axios.get('/auth/logout');
+    this.setState({
+      loggedInUser: {},
+    });
+  }
 
   render() {
     let { loggedInUser, email, password } = this.state;
     return (
-      <div className="form-container done">
-        <div className="login-form">
+      <div className='form-container done'>
+        <div className='login-form'>
           <h3>Auth w/ Bcrypt</h3>
           <div>
             <input
               value={email}
               onChange={e => this.setState({ email: e.target.value })}
-              type="text"
-              placeholder="Email"
+              type='text'
+              placeholder='Email'
             />
           </div>
           <div>
             <input
               value={password}
-              type="password"
+              type='password'
               onChange={e => this.setState({ password: e.target.value })}
-              placeholder="password"
+              placeholder='password'
             />
           </div>
           {loggedInUser.email ? (
